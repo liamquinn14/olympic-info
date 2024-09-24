@@ -13,7 +13,7 @@ export default async function Home() {
 
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-full p-8">
+    <div className="flex flex-col items-center justify-center w-screen h-screen p-8">
       <h1 className="text-3xl font-bold text-center">
         Random Olympian
       </h1>

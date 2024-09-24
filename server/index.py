@@ -40,12 +40,6 @@ app = Flask(__name__)
 
 CORS(app)
 
-@app.route('/api/find-olympics', methods=['POST'])
-def find_given_olympics():
-    olympics = request.json['olympics']
-    all_golds = {name: athlete for name, athlete in all_data.items() if athlete['Games'] == olympics and athlete['Medal'] == 'Gold'}
-    return jsonify({'all_golds': all_golds})
-
 @app.route('/api/random-olympian', methods=['GET'])
 def random_olympian():
     random_name = random.choice(list(all_data.keys()))
@@ -54,3 +48,18 @@ def random_olympian():
     return jsonify({
         "athlete_name": random_name,
         "summary": f"{random_name} won {random_athlete['Medal']} at the {random_athlete['Games']} Olympic Games in {random_athlete['City']}. Completing in the {random_athlete['Sport']},  {random_name} made their nation of {random_athlete['Team']} proud at the age of {random_athlete['Age']}."})
+
+@app.route('/api/olympics-list', methods=['GET'])
+def olympics_list():
+    all_games = [entry['Games'] for entry in all_data.values()]
+    unique_games = set(all_games)
+    sorted_games = sorted(unique_games)
+    return jsonify({
+        "olympics_list": sorted_games
+    })
+
+@app.route('/api/specific-olympics', methods=['POST'])
+def specific_olympics():
+    chosen_olympics = request.json['olympics']
+    all_golds = {name: athlete for name, athlete in all_data.items() if athlete['Games'] == chosen_olympics and athlete['Medal'] == 'Gold'}
+    return jsonify({'all_golds': all_golds})
